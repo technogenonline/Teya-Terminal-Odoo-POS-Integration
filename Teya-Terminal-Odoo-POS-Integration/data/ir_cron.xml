@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <delete model="ir.cron" search="[('name', '=', 'Teya: Refresh OAuth tokens (all payment methods)')]"/>
+
+    <record id="taplink_refresh_oauth_tokens_cron" model="ir.cron">
+        <field name="name">Taplink: Refresh OAuth tokens (all payment methods)</field>
+        <field name="model_id" ref="point_of_sale.model_pos_payment_method"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_taplink_refresh_oauth_tokens()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="active" eval="True"/>
+        <field name="interval_number">12</field>
+        <field name="interval_type">hours</field>
+        <field name="priority">5</field>
+    </record>
+
+</odoo>

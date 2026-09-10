@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="teya_payment_terminal_integration.TaplinkEqualSplitPanel">
+        <section class="taplink-split-panel card border-0 shadow-sm mb-3" t-if="props.order.get_due() &gt; 0">
+            <div class="card-body p-3 d-flex flex-column gap-3">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 fw-semibold text-primary">
+                        <i class="fa fa-users me-2" role="img"/>
+                        Equal split
+                    </h6>
+                    <span t-if="props.plan?.active" class="badge text-bg-primary rounded-pill">
+                        <t t-esc="progressLabel"/>
+                    </span>
+                </div>
+
+                <div t-if="!props.taplinkPaymentMethods.length" class="alert alert-warning py-2 px-3 mb-0 small">
+                    Link a payment method with <strong>Teya</strong> as the terminal on this POS.
+                </div>
+
+                <div class="taplink-split-row d-flex align-items-center gap-2" t-if="!props.plan?.active or props.plan.status === 'idle' or props.plan.status === 'stopped'">
+                    <label class="form-label mb-0 fw-semibold text-nowrap">Parts:</label>
+                    <input type="number"
+                        class="form-control form-control-lg taplink-split-count-input flex-grow-1"
+                        min="2"
+                        max="20"
+                        placeholder="2"
+                        t-att-value="props.splitCount || ''"
+                        t-on-input="onInputChange"
+                        t-att-disabled="props.terminalInProgress or showStopButton"/>
+                </div>
+
+                <div class="taplink-split-remaining rounded-3 border bg-view px-3 py-3 text-center">
+                    <div class="small text-muted mb-1">Remaining</div>
+                    <div class="fs-3 fw-bold" t-esc="props.formatCurrency(props.order.get_due())"/>
+                    <div t-if="props.useEqualSplit and props.splitCount &gt;= 2 and !props.plan?.active" class="small text-muted mt-2">
+                        Per part:
+                        <strong class="text-success" t-esc="props.formatCurrency(perPartAmount)"/>
+                    </div>
+                    <div t-if="props.plan?.active" class="small text-muted mt-2">
+                        This charge:
+                        <strong class="text-success" t-esc="props.formatCurrency(currentPartAmount)"/>
+                    </div>
+                </div>
+
+                <t t-if="showStopButton">
+                    <p class="text-center mb-0 taplink-split-status">
+                        <i class="fa fa-circle-o-notch fa-spin me-2" role="img"/>
+                        Waiting for terminal
+                    </p>
+                    <div class="d-flex flex-column gap-2">
+                        <button type="button"
+                            class="btn btn-outline-warning w-100 py-2 fw-semibold"
+                            title="Manager PIN required"
+                            t-on-click="() => props.onForceDone()">
+                            <i class="fa fa-unlock-alt me-2" role="img"/>
+                            Force done (manager)
+                        </button>
+                        <button type="button"
+                            class="btn btn-danger w-100 py-3 fw-semibold taplink-split-stop-btn"
+                            t-on-click="() => props.onStop()">
+                            <i class="fa fa-stop me-2" role="img"/>
+                            Stop
+                        </button>
+                    </div>
+                </t>
+
+                <t t-if="showStoppedActions">
+                    <p class="text-center mb-0 text-muted small">Payment stopped</p>
+                    <div class="d-flex gap-2">
+                        <button type="button"
+                            class="btn btn-outline-danger flex-fill py-3"
+                            t-on-click="() => props.onCancelSplit()">
+                            Cancel
+                        </button>
+                        <button type="button"
+                            class="btn btn-primary flex-fill py-3"
+                            t-on-click="() => props.onRetrySplit()">
+                            Re-try
+                        </button>
+                    </div>
+                </t>
+
+                <div t-if="showPaymentActions" class="d-flex gap-2">
+                    <button t-if="props.hasCashMethod"
+                        type="button"
+                        class="btn btn-success flex-fill py-3"
+                        t-att-disabled="!canStartSplit"
+                        t-on-click="() => props.onPayCash()">
+                        Cash
+                    </button>
+                    <button t-if="props.taplinkPaymentMethods.length"
+                        type="button"
+                        class="btn btn-primary flex-fill py-3 taplink-split-terminal-btn"
+                        t-att-disabled="!canStartSplit"
+                        t-on-click="() => props.onPayTerminal(props.taplinkPaymentMethods[0])">
+                        Terminal
+                    </button>
+                    <button t-else="" type="button" class="btn btn-primary flex-fill py-3" disabled="disabled">
+                        Terminal
+                    </button>
+                </div>
+
+                <p t-if="!props.useEqualSplit" class="small text-muted mb-0 text-center">
+                    Enter number of parts (2 or more), then press <strong>Terminal</strong> or select your Teya payment method.
+                </p>
+            </div>
+        </section>
+    </t>
+
+</templates>

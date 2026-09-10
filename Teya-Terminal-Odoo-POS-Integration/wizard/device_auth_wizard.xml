@@ -1,0 +1,21 @@
+<odoo>
+    <record id="taplink_device_auth_wizard_form" model="ir.ui.view">
+        <field name="name">taplink.device.auth.wizard.form</field>
+        <field name="model">taplink.device.auth.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Device authorization">
+                <group>
+                    <field name="qr_code" widget="image" class="oe_avatar"/>
+                    OR
+                    <field name="verification_uri" widget="url" readonly="1"/>
+                    <field name="device_code" readonly="1"/>
+                    <field name="payment_method_id" invisible="1"/>
+                </group>
+                <footer>
+                    <button string="Confirm" class="btn-secondary" type="object" name="action_confirm_device_authorization"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

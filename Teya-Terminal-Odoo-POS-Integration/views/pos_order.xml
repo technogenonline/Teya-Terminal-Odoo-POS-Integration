@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="taplink_pos_order_form" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit.taplink</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='extra']/group" position="inside">
+                <group name="taplink_gateway_group" string="Teya PosLink">
+                    <field name="taplink_gateway_ref" readonly="1"/>
+                    <field name="taplink_tx_ref" readonly="1"/>
+                    <field name="taplink_gateway_payload" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
