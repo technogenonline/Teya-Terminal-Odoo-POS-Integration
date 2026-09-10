@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_payment_split.PaymentScreenDue"
+       t-inherit="point_of_sale.PaymentScreenDue"
+       t-inherit-mode="extension">
+        <xpath expr="//section[hasclass('paymentlines-container')]" position="after">
+            <SplitPaymentStatus
+                t-if="pos.config.enable_payment_split"
+                order="currentOrder"
+                plan="paymentSplitPlan"
+                formatCurrency.bind="formatSplitCurrency"
+                terminalInProgress="paymentSplitBusy"
+                onStop.bind="stopPaymentSplit"
+                onCancel.bind="cancelPaymentSplit"
+                onRetry.bind="retryPaymentSplit"/>
+        </xpath>
+    </t>
+
+</templates>

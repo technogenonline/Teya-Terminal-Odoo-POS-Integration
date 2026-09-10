@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_payment_split.SplitPaymentDialog">
+        <Dialog title="title" size="'md'" contentClass="'pos-payment-split-dialog'">
+            <div class="p-1">
+                <p class="text-muted mb-3">
+                    <t t-esc="props.paymentMethodName"/>
+                    —
+                    <t t-esc="labelRemaining"/>:
+                    <strong t-esc="remainingLabel"/>
+                </p>
+
+                <div class="mb-3">
+                    <div class="btn-group w-100 flex-wrap" role="group">
+                        <button type="button"
+                            t-attf-class="btn btn-lg flex-fill {{ state.mode === 'full' ? 'btn-primary' : 'btn-outline-secondary' }}"
+                            t-on-click="() => this.setMode('full')">
+                            <t t-esc="labelFull"/>
+                        </button>
+                        <button type="button"
+                            t-attf-class="btn btn-lg flex-fill {{ state.mode === 'amount' ? 'btn-primary' : 'btn-outline-secondary' }}"
+                            t-on-click="() => this.setMode('amount')">
+                            <t t-esc="labelPartial"/>
+                        </button>
+                        <button type="button"
+                            t-attf-class="btn btn-lg flex-fill {{ state.mode === 'parts' ? 'btn-primary' : 'btn-outline-secondary' }}"
+                            t-on-click="() => this.setMode('parts')">
+                            <t t-esc="labelSplitBy"/>
+                        </button>
+                    </div>
+                </div>
+
+                <div t-if="showInput" class="mb-3">
+                    <label class="form-label fw-semibold" t-esc="valueLabel"/>
+                    <div class="input-group input-group-lg pos-payment-split-value-group">
+                        <input type="text"
+                            class="form-control"
+                            t-att-placeholder="valuePlaceholder"
+                            t-att-inputmode="state.mode === 'parts' ? 'numeric' : 'decimal'"
+                            t-att-value="state.value"
+                            t-on-input="onValueInput"/>
+                        <button type="button"
+                            class="btn btn-outline-secondary px-3"
+                            t-att-title="labelOpenNumpad"
+                            t-att-aria-label="labelOpenNumpad"
+                            t-on-click="openNumpad">
+                            <i class="fa fa-calculator fa-lg" role="img"/>
+                        </button>
+                    </div>
+                    <div t-if="state.mode === 'parts'" class="form-text">
+                        Equal split of the full due into this many payments (e.g. 3 or 4).
+                    </div>
+                    <div t-elif="state.mode === 'amount'" class="form-text">
+                        Enter less than the due for a partial payment, or more to pay with change.
+                    </div>
+                    <div t-if="!isValueValid and state.value" class="text-danger small mt-1" t-esc="validationMessage"/>
+                </div>
+
+                <div t-if="preview" class="alert alert-info mb-0">
+                    <div>
+                        <t t-esc="labelPayments"/>:
+                        <strong t-esc="preview.paymentCount"/>
+                    </div>
+                    <div t-if="state.mode === 'parts'">
+                        <t t-esc="labelPerPart"/>:
+                        <strong t-esc="props.formatCurrency(preview.perPartAmount)"/>
+                    </div>
+                    <div t-else="">
+                        <t t-esc="labelFirstCharge"/>:
+                        <strong t-esc="props.formatCurrency(preview.firstAmount)"/>
+                    </div>
+                    <div t-if="showRemainingAfter">
+                        <t t-esc="labelRemainingAfter"/>:
+                        <strong t-esc="props.formatCurrency(preview.remainingAfter)"/>
+                    </div>
+                    <div t-if="showChange">
+                        <t t-esc="labelChange"/>:
+                        <strong class="text-success" t-esc="props.formatCurrency(preview.changeAmount)"/>
+                    </div>
+                </div>
+            </div>
+
+            <t t-set-slot="footer">
+                <button type="button" class="btn btn-secondary btn-lg" t-on-click="onCancel">
+                    <t t-esc="labelCancel"/>
+                </button>
+                <button type="button"
+                    class="btn btn-primary btn-lg"
+                    t-att-disabled="!isValueValid"
+                    t-on-click="onSubmit">
+                    <t t-esc="labelSubmit"/>
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

@@ -1,0 +1,19 @@
+.pos-payment-split-dialog {
+    .btn-group .btn {
+        font-weight: 600;
+    }
+
+    input.form-control-lg,
+    .pos-payment-split-value-group .form-control {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .pos-payment-split-value-group .btn {
+        min-width: 3.25rem;
+    }
+}
+
+.pos-payment-split-status {
+    font-weight: 600;
+    color: var(--bs-primary);
+}

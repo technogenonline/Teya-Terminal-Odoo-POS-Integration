@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_payment_split.PaymentScreenPaymentLines"
+       t-inherit="point_of_sale.PaymentScreenPaymentLines"
+       t-inherit-mode="extension">
+
+        <!-- Failed / cancelled terminal payment: allow force done beside Retry -->
+        <xpath expr="//t[@t-elif=&quot;line.payment_status == 'retry'&quot;]/div[hasclass('send_payment_request')]" position="after">
+            <div t-if="canShowTerminalForceDone(line)"
+                class="button send_force_done"
+                t-att-title="terminalForceDoneTitle()"
+                t-on-click="() => this.props.sendForceDone(line)">
+                Force done
+            </div>
+        </xpath>
+
+        <!-- Pending terminal line (core uses t-if, not t-elif, for pending status) -->
+        <xpath expr="//t[@t-if=&quot;line.payment_status == 'pending'&quot;]/div[hasclass('send_payment_request')]" position="after">
+            <div t-if="isTerminalPaymentLine(line)"
+                class="button send_force_done"
+                t-att-title="terminalForceDoneTitle()"
+                t-on-click="() => this.props.sendForceDone(line)">
+                Force done
+            </div>
+        </xpath>
+
+        <!-- Selected line: core uses a button (selected class is on t-attf-class, not hasclass) -->
+        <xpath expr="//button[hasclass('delete-button')]" position="replace">
+            <button t-if="canRemovePaymentLine(line)"
+                class="delete-button btn btn-link mx-2 px-3"
+                t-on-click.stop="() => this.props.deleteLine(line.uuid)"
+                aria-label="Remove" title="Remove">
+                <i class="fa fa-times-circle text-danger fs-2" role="img"/>
+            </button>
+        </xpath>
+
+        <!-- Unselected line (core uses a div; keep xpath on div for first inheritance pass) -->
+        <xpath expr="//div[hasclass('paymentline') and hasclass('bg-view')]//div[hasclass('delete-button')]" position="replace">
+            <button t-if="canRemovePaymentLine(line)"
+                class="delete-button btn btn-link mx-2 px-3"
+                t-on-click.stop="() => this.props.deleteLine(line.uuid)"
+                aria-label="Remove" title="Remove">
+                <i class="fa fa-times-circle text-danger fs-2" role="img"/>
+            </button>
+        </xpath>
+
+    </t>
+
+</templates>

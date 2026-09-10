@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_payment_split.ReceiptScreen"
+       t-inherit="point_of_sale.ReceiptScreen"
+       t-inherit-mode="extension">
+        <xpath expr="//div[@id='action_btn_desktop']" position="inside">
+            <button t-if="isContinuePartialPayment()"
+                class="button next validation btn btn-primary w-100 py-4 lh-lg"
+                t-on-click="continuePartialPayment"
+                name="continue_payment">
+                <i class="fa fa-chevron-right me-2" role="img"/>
+                Continue Payment
+            </button>
+        </xpath>
+        <xpath expr="//div[@id='action_btn_mobile']" position="inside">
+            <div t-if="isContinuePartialPayment()"
+                class="btn-switchpane validation-button btn btn-primary btn-lg py-3 flex-fill lh-lg"
+                t-on-click="continuePartialPayment"
+                name="continue_payment">
+                Continue Payment
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='action_btn_desktop']/button[hasclass('validation')]" position="attributes">
+            <attribute name="t-if">!isContinuePartialPayment() and !splittedOrder</attribute>
+        </xpath>
+        <xpath expr="//div[@id='action_btn_mobile']/div[hasclass('validation-button')]" position="attributes">
+            <attribute name="t-if">!isContinuePartialPayment() and !splittedOrder</attribute>
+        </xpath>
+    </t>
+
+</templates>

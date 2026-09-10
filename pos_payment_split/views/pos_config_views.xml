@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_payment_split" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.payment.split</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='pos_interface_section']" position="after">
+                <block title="Payment split" id="pos_payment_split_section">
+                    <setting string="Split payment dialog"
+                             help="When enabled, selecting a payment method on the payment screen opens a dialog to split by amount or percentage.">
+                        <field name="pos_enable_payment_split"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
