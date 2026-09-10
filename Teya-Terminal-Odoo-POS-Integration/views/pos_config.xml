@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <delete model="ir.ui.view" search="[('name', '=', 'res.config.settings.view.form.inherit.nf_teya_pos_int')]"/>
+</odoo>

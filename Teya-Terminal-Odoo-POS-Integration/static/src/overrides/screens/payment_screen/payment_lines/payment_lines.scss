@@ -1,0 +1,61 @@
+.paymentline .taplink-line-cancel-btn {
+    min-height: 2.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    .fa-times {
+        font-size: 1.1rem;
+    }
+}
+
+.paymentlines .electronic_payment:has(.taplink-cancel-primary) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+
+    .electronic_status {
+        text-align: center;
+        margin: 0;
+        padding: 0.5rem;
+    }
+
+    .taplink-epayment-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        width: 100%;
+        padding: 0 0.5rem 0.5rem;
+
+        .button {
+            flex: 1 1 auto;
+            min-width: 7rem;
+            min-height: 2.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .taplink-cancel-primary {
+            flex: 1 1 100%;
+            background-color: var(--bs-danger);
+            color: #fff;
+            border-radius: 0.375rem;
+
+            &:active {
+                filter: brightness(0.92);
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .paymentline .taplink-line-cancel-btn {
+        min-height: 3rem;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}
